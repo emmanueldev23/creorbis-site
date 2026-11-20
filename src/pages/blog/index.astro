@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts } from '../../data/posts';
+const mins = (p: typeof posts[number]) => Math.max(1, Math.round(p.sections.reduce((n, s) => n + [...(s.p ?? []), ...(s.list ?? [])].join(' ').split(' ').length, 0) / 200));
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { dateStyle: 'long' });
+---
+<Base title="Blog | CREORBIS" description="Practical guides on websites, CRM, ERP, custom web apps and automation for small and growing businesses.">
+  <section class="wrap pt-16 pb-8">
+    <h1 class="rv max-w-3xl text-4xl font-semibold sm:text-5xl">Blog</h1>
+    <p class="rv mt-5 max-w-2xl text-lg text-silver" style="--d:100ms">Practical guides to help you make better technology decisions.</p>
+  </section>
+  <section class="wrap grid gap-5 py-8 md:grid-cols-2 lg:grid-cols-3">
+    {posts.map((p, i) => (
+      <a href={`/blog/${p.slug}`} class="rv card group flex flex-col rounded-xl p-6" style={`--d:${i * 70}ms`}>
+        <p class="font-mono text-xs text-aqua">{p.tags.join(' · ')}</p>
+        <h2 class="mt-3 text-xl font-semibold transition-colors group-hover:text-aqua">{p.title}</h2>
+        <p class="mt-3 flex-1 text-sm text-silver">{p.excerpt}</p>
+        <p class="mt-5 text-xs text-silver">{fmt(p.date)} · {mins(p)} min read</p>
+      </a>
+    ))}
+  </section>
+</Base>

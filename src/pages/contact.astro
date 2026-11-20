@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import { services, site } from '../config/site';
+---
+<Base title="Contact | CREORBIS" description="Start a project with CREORBIS. Tell us what you need and we’ll reply with a clear next step.">
+  <section class="wrap grid gap-12 pt-16 lg:grid-cols-[1fr_1.3fr]">
+    <div>
+      <h1 class="text-4xl font-semibold sm:text-5xl">Start a project</h1>
+      <p class="mt-5 max-w-md text-lg text-silver">Tell us what you want to build and who it’s for. A few sentences is enough.</p>
+      <ul class="mt-8 space-y-3 text-silver">
+        {site.contactEmail && <li>Email <a class="text-aqua underline underline-offset-4 hover:text-cloud" href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></li>}
+        {site.whatsapp && <li>WhatsApp <a class="text-aqua underline underline-offset-4 hover:text-cloud" href={`https://wa.me/${site.whatsapp}`} rel="noopener">Message us</a></li>}
+        {site.location && <li>Based in {site.location}</li>}
+      </ul>
+    </div>
+    <div>
+      <form id="enquiry" novalidate class="space-y-5" data-endpoint={site.formEndpoint} data-key={site.formAccessKey} data-email={site.contactEmail}>
+        <div class="hidden" aria-hidden="true"><label>Leave empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+        <div><label for="name" class="mb-1.5 block text-sm">Name</label><input id="name" name="name" class="field" autocomplete="name" required /><p class="err mt-1 hidden text-sm text-[#ff8a8a]" data-for="name"></p></div>
+        <div><label for="email" class="mb-1.5 block text-sm">Email</label><input id="email" name="email" type="email" class="field" autocomplete="email" required /><p class="err mt-1 hidden text-sm text-[#ff8a8a]" data-for="email"></p></div>
+        <div><label for="business" class="mb-1.5 block text-sm">Business name <span class="text-silver">(optional)</span></label><input id="business" name="business" class="field" autocomplete="organization" /></div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div><label for="service" class="mb-1.5 block text-sm">Service needed</label>
+            <select id="service" name="service" class="field" required><option value="">Choose one</option>{services.map((s) => <option value={s.id}>{s.title}</option>)}<option value="unsure">Not sure yet</option></select>
+            <p class="err mt-1 hidden text-sm text-[#ff8a8a]" data-for="service"></p></div>
+          <div><label for="budget" class="mb-1.5 block text-sm">Budget <span class="text-silver">(optional)</span></label>
+            <select id="budget" name="budget" class="field"><option value="">Prefer not to say</option><option>Under ₹25,000</option><option>₹25,000 – ₹1,00,000</option><option>₹1,00,000 – ₹5,00,000</option><option>Over ₹5,00,000</option></select></div>
+        </div>
+        <div><label for="message" class="mb-1.5 block text-sm">Project description</label><textarea id="message" name="message" rows="6" class="field" required></textarea><p class="err mt-1 hidden text-sm text-[#ff8a8a]" data-for="message"></p></div>
+        <p id="form-error" role="alert" class="hidden rounded-md border border-[#ff8a8a]/40 p-3 text-sm text-[#ff8a8a]"></p>
+        <button id="send" type="submit" class="btn btn-primary">Send enquiry</button>
+      </form>
+      <div id="demo-success" role="status" tabindex="-1" class="hidden rounded-xl border border-aqua/40 bg-surface/40 p-6">
+        <h2 id="ok-title" class="text-xl font-semibold"></h2>
+        <p id="ok-text" class="mt-2 text-silver"></p>
+        <button id="reset" class="btn btn-ghost mt-5" type="button">Send another</button>
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+  const form = document.querySelector<HTMLFormElement>('#enquiry')!;
+  const ok = document.querySelector<HTMLElement>('#demo-success')!;
+  const q = new URLSearchParams(location.search).get('service');
+  const sel = form.elements.namedItem('service') as HTMLSelectElement;
+  if (q && [...sel.options].some((o) => o.value === q)) sel.value = q;
+  const plan = new URLSearchParams(location.search).get('plan');
+  const msg = form.elements.namedItem('message') as HTMLTextAreaElement;
+  if (plan && !msg.value) msg.value = `I’m interested in the ${plan} plan. `;
+  const rules: Record<string, (v: string) => string> = {
+    name: (v) => (v.trim().length < 2 ? 'Enter your name.' : ''),
+    email: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Enter a valid email address.'),
+    service: (v) => (v ? '' : 'Choose a service, or “Not sure yet”.'),
+    message: (v) => (v.trim().length < 20 ? 'Describe your project in at least 20 characters.' : ''),
+  };
+  const check = (name: string) => {
+    const el = form.elements.namedItem(name) as HTMLInputElement;
+    const msg = rules[name](el.value);
+    const p = form.querySelector<HTMLElement>(`[data-for="${name}"]`)!;
+    p.textContent = msg; p.classList.toggle('hidden', !msg);
+    el.setAttribute('aria-invalid', String(!!msg));
+    if (msg) el.setAttribute('aria-describedby', `${name}-err`); else el.removeAttribute('aria-describedby');
+    p.id = `${name}-err`;
+    return !msg;
+  };
+  Object.keys(rules).forEach((n) => (form.elements.namedItem(n) as HTMLElement).addEventListener('input', (ev) => { if ((ev.target as HTMLElement).getAttribute('aria-invalid') === 'true') check(n); }));
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.querySelector<HTMLElement>('#form-error')!;
+    err.classList.add('hidden');
+    const results = Object.keys(rules).map(check);
+    if (results.includes(false)) { (form.querySelector('[aria-invalid="true"]') as HTMLElement)?.focus(); return; }
+    if ((form.elements.namedItem('website') as HTMLInputElement).value) return;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    delete data.website;
+    const { endpoint, key, email } = form.dataset;
+    const done = (title: string, text: string) => {
+      document.querySelector('#ok-title')!.textContent = title;
+      document.querySelector('#ok-text')!.textContent = text;
+      form.classList.add('hidden'); ok.classList.remove('hidden'); ok.focus();
+    };
+    if (endpoint && key) {
+      const btn = document.querySelector<HTMLButtonElement>('#send')!;
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ access_key: key, subject: 'New CREORBIS enquiry', from_name: 'CREORBIS website', ...data }) });
+        const json = await res.json();
+        if (!res.ok || !json.success) throw new Error('failed');
+        form.reset();
+        done('Thanks, we’ve got your enquiry', 'We’ll reply to the email address you gave us.');
+      } catch {
+        err.textContent = 'Something went wrong and your message was not sent. Please try again' + (email ? ` or email ${email}.` : '.');
+        err.classList.remove('hidden');
+      } finally { btn.disabled = false; btn.textContent = 'Send enquiry'; }
+    } else if (email) {
+      const body = `Name: ${data.name}\nEmail: ${data.email}\nBusiness: ${data.business || '-'}\nService: ${data.service}\nBudget: ${data.budget || '-'}\n\n${data.message}`;
+      location.href = `mailto:${email}?subject=${encodeURIComponent('New CREORBIS enquiry')}&body=${encodeURIComponent(body)}`;
+      done('Your email app should open', 'Send the pre-filled email to complete your enquiry.');
+    } else {
+      done('Your details look good', 'This is a preview. Sending isn’t connected yet, so nothing was delivered.');
+    }
+  });
+  document.querySelector('#reset')!.addEventListener('click', () => { ok.classList.add('hidden'); form.classList.remove('hidden'); });
+</script>

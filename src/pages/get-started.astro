@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { services, process } from '../config/site';
+const prep = ['What you want to achieve, in a sentence or two', 'Who will use it', 'Two or three examples you like', 'Content, logos or documents you already have', 'A rough budget range and target date', 'Who makes the final decision'];
+const d = (i: number) => `--d:${i * 80}ms`;
+---
+<Base title="Get Started | CREORBIS" description="How to start a project with CREORBIS: choose what you need, prepare a few details and tell us about your project.">
+  <section class="wrap pt-16 pb-8">
+    <h1 class="rv max-w-3xl text-4xl font-semibold sm:text-5xl">Get started</h1>
+    <p class="rv mt-5 max-w-2xl text-lg text-silver" style="--d:100ms">Starting is simple. Pick what you need, tell us a little about it, and we’ll reply with questions and a clear next step.</p>
+  </section>
+  <section class="wrap py-10">
+    <h2 class="rv text-2xl font-semibold">1. What do you need?</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((s, i) => (
+        <a href={`/contact?service=${s.id}`} class="rv card group rounded-xl p-6" style={d(i)}>
+          <h3 class="text-lg font-medium">{s.title}</h3>
+          <p class="mt-2 text-sm text-silver">{s.summary}</p>
+          <span class="mt-4 inline-block text-sm text-aqua transition-transform group-hover:translate-x-1">Start with this</span>
+        </a>
+      ))}
+    </div>
+    <p class="rv mt-4 text-sm text-silver">Not sure? <a href="/contact?service=unsure" class="text-aqua underline underline-offset-4 hover:text-cloud">Tell us your problem</a> and we’ll suggest the right fit.</p>
+  </section>
+  <section class="wrap grid gap-12 py-12 lg:grid-cols-2">
+    <div>
+      <h2 class="rv text-2xl font-semibold">2. Gather a few details</h2>
+      <p class="rv mt-2 text-silver">You don’t need everything. The more you can share, the more accurate our first reply.</p>
+      <ul class="mt-5 space-y-2">{prep.map((x, i) => <li class="rv flex gap-3" style={d(i)}><span class="text-aqua" aria-hidden="true">–</span><span class="text-silver">{x}</span></li>)}</ul>
+    </div>
+    <div>
+      <h2 class="rv text-2xl font-semibold">3. What happens next</h2>
+      <ol class="mt-5 space-y-5">{process.map((p, i) => (
+        <li class="rv flex gap-4" style={d(i)}><span class="font-mono text-sm text-aqua">{i + 1}</span><div><h3 class="font-medium">{p.title}</h3><p class="text-sm text-silver">{p.text}</p></div></li>
+      ))}</ol>
+    </div>
+  </section>
+  <section class="wrap py-12">
+    <div class="rv rounded-2xl border border-white/10 bg-surface/40 p-8 md:p-12">
+      <h2 class="text-3xl font-semibold">Ready when you are</h2>
+      <p class="mt-3 max-w-xl text-silver">Send your details and we’ll take it from there. Questions first? Read the <a href="/faq" class="text-aqua underline underline-offset-4 hover:text-cloud">FAQ</a> or see <a href="/pricing" class="text-aqua underline underline-offset-4 hover:text-cloud">pricing</a>.</p>
+      <a href="/contact" class="btn btn-primary mt-7">Start a project</a>
+    </div>
+  </section>
+</Base>

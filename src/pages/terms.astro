@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/Legal.astro';
+const sections = [
+  { h: 'About this website', p: ['This website describes the services CREORBIS offers. The information is general and may change without notice.'] },
+  { h: 'Prices and quotes', p: ['Prices shown are starting points, not offers. A project is only agreed when scope, price, timeline and payment terms are confirmed in writing.'] },
+  { h: 'Enquiries', p: ['Sending an enquiry does not create a contract. We will reply to discuss your needs and what we can deliver.'] },
+  { h: 'Content and ownership', p: ['The text, design and branding on this website belong to CREORBIS. Please do not copy them without permission. Ownership of work we build for you is set out in the written agreement for that project.'] },
+  { h: 'Illustrative previews', p: ['Images labelled as illustrative previews show the kind of interface we build. They are not screenshots of real client products.'] },
+  { h: 'Liability', p: ['We take care to keep this website accurate and available, but we provide it as is and are not liable for losses from relying on its general information.'] },
+  { h: 'Contact', p: ['Questions about these terms can be sent through the contact page.'] },
+];
+---
+<Base title="Terms of Use | CREORBIS" description="Terms for using the CREORBIS website."><Legal title="Terms of Use" updated="5 November 2026" sections={sections} /></Base>

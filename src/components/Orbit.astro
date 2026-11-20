@@ -1,0 +1,24 @@
+---
+const ell = 'M30 300 a270 92 0 1 0 540 0 a270 92 0 1 0 -540 0';
+const circ = 'M160 300 a140 140 0 1 0 280 0 a140 140 0 1 0 -280 0';
+---
+<svg id="orbit" viewBox="0 0 600 600" fill="none" aria-hidden="true" class="w-full max-w-md mx-auto">
+  <defs>
+    <linearGradient id="arc" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#155EEF" stop-opacity="0"/><stop offset=".6" stop-color="#155EEF"/><stop offset="1" stop-color="#45C8FF"/></linearGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#45C8FF" stop-opacity=".9"/><stop offset="1" stop-color="#45C8FF" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle class="ring-spin" cx="300" cy="300" r="210" stroke="#929DB2" stroke-opacity=".28" stroke-dasharray="2 12"/>
+  <circle cx="300" cy="300" r="140" stroke="#929DB2" stroke-opacity=".18"/>
+  <g transform="rotate(-24 300 300)">
+    <ellipse cx="300" cy="300" rx="270" ry="92" stroke="#929DB2" stroke-opacity=".22"/>
+    <path class="orbit-draw" pathLength="1" d="M30 300 A270 92 0 0 1 570 300" stroke="url(#arc)" stroke-width="2.5" stroke-linecap="round"/>
+    <g><circle r="26" fill="url(#glow)"/><circle r="4.5" fill="#F4F7FC"/><animateMotion dur="16s" repeatCount="indefinite" path={ell}/></g>
+    <g><circle r="3" fill="#45C8FF" opacity=".8"/><animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ell}/></g>
+  </g>
+  <g><circle r="3.5" fill="#155EEF"/><animateMotion dur="9s" repeatCount="indefinite" path={circ}/></g>
+  <circle cx="300" cy="300" r="38" fill="#202B40" stroke="#155EEF" stroke-opacity=".6"/>
+  <circle cx="300" cy="300" r="38" stroke="#45C8FF" stroke-opacity=".5"><animate attributeName="r" values="38;74" dur="3.2s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".5;0" dur="3.2s" repeatCount="indefinite"/></circle>
+</svg>
+<script>
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) (document.getElementById('orbit') as unknown as SVGSVGElement).pauseAnimations();
+</script>

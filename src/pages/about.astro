@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+---
+<Base title="About | CREORBIS" description="CREORBIS is a new technology company building reliable, maintainable software. Learn about our vision and approach.">
+  <section class="wrap pt-16 pb-8">
+    <h1 class="max-w-3xl text-4xl font-semibold sm:text-5xl">Technology built to be useful.</h1>
+    <p class="mt-5 max-w-2xl text-lg text-silver">CREORBIS is a new technology company. We start with websites and custom software, and aim to grow into building our own products.</p>
+  </section>
+  <section class="wrap grid gap-12 border-t border-white/10 py-12 lg:grid-cols-2">
+    <div>
+      <h2 class="text-2xl font-semibold">The name</h2>
+      <p class="mt-3 max-w-prose text-silver">CREORBIS combines <em>creo</em>, Latin for “I create”, with <em>orbis</em>, meaning world. Together: “I create worlds.” It describes what we want to do, which is to turn ideas into digital experiences people use.</p>
+    </div>
+    <div>
+      <h2 class="text-2xl font-semibold">Vision</h2>
+      <p class="mt-3 max-w-prose text-silver">To build useful, reliable and thoughtfully engineered technology that helps people and businesses establish, improve and scale what they do online.</p>
+    </div>
+  </section>
+  {site.founder.name && (
+    <section class="wrap border-t border-white/10 py-12">
+      <div class="rv max-w-2xl">
+        <h2 class="text-2xl font-semibold">Who’s behind CREORBIS</h2>
+        <p class="mt-3 text-silver">CREORBIS is founder-led. {site.founder.name}, {site.founder.role.toLowerCase()} and full-stack developer{site.location ? `, based in ${site.location}` : ''}, works directly with every client, so you talk to the person doing the work.</p>
+      </div>
+    </section>
+  )}
+  <section class="wrap border-t border-white/10 py-12">
+    <h2 class="text-2xl font-semibold">How we think about engineering</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      <div class="border-l-2 border-brand pl-5"><h3 class="text-lg font-medium">Start with the problem</h3><p class="mt-2 text-silver">We ask what you’re trying to achieve before deciding what to build, and say so when a simpler option will do.</p></div>
+      <div class="border-l-2 border-brand pl-5"><h3 class="text-lg font-medium">Keep it maintainable</h3><p class="mt-2 text-silver">Clear structure, readable code and sensible dependencies, so the software stays easy to change.</p></div>
+      <div class="border-l-2 border-brand pl-5"><h3 class="text-lg font-medium">Be honest about scope</h3><p class="mt-2 text-silver">We promise what we can deliver, and use AI and automation only where they add real value.</p></div>
+    </div>
+    <a href="/contact" class="btn btn-primary mt-10">Start a project</a>
+  </section>
+</Base>

@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts } from '../../data/posts';
+import { site } from '../../config/site';
+export function getStaticPaths() { return posts.map((post) => ({ params: { slug: post.slug }, props: { post } })); }
+const { post } = Astro.props;
+const more = posts.filter((p) => p.slug !== post.slug).slice(0, 2);
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { dateStyle: 'long' });
+const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, datePublished: post.date, description: post.excerpt, author: { '@type': 'Organization', name: site.name }, publisher: { '@type': 'Organization', name: site.name } };
+---
+<Base title={`${post.title} | CREORBIS`} description={post.excerpt} jsonLd={ld}>
+  <article class="wrap max-w-3xl pt-14">
+    <a href="/blog" class="text-sm text-silver hover:text-cloud">All articles</a>
+    <p class="mt-6 font-mono text-xs text-aqua">{post.tags.join(' · ')}</p>
+    <h1 class="rv mt-3 text-3xl font-semibold sm:text-5xl">{post.title}</h1>
+    <p class="mt-4 text-sm text-silver">{fmt(post.date)} · CREORBIS</p>
+    <div class="mt-10 space-y-10">
+      {post.sections.map((s) => (
+        <section class="rv">
+          <h2 class="text-2xl font-semibold">{s.h}</h2>
+          {s.p?.map((t) => <p class="mt-3 text-lg leading-relaxed text-silver">{t}</p>)}
+          {s.list && <ul class="mt-4 space-y-2">{s.list.map((x) => <li class="flex gap-3 text-lg text-silver"><span class="text-aqua" aria-hidden="true">–</span>{x}</li>)}</ul>}
+        </section>
+      ))}
+    </div>
+    <div class="rv mt-14 rounded-2xl border border-white/10 bg-surface/40 p-7">
+      <h2 class="text-xl font-semibold">Planning something like this?</h2>
+      <p class="mt-2 text-silver">Tell us what you need and we’ll reply with honest advice and a clear next step.</p>
+      <a href="/get-started" class="btn btn-primary mt-5">Get started</a>
+    </div>
+  </article>
+  <section class="wrap max-w-3xl py-12"><h2 class="text-lg font-medium">Keep reading</h2>
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">{more.map((p) => <a href={`/blog/${p.slug}`} class="card rounded-xl p-5"><h3 class="font-medium">{p.title}</h3><p class="mt-2 text-sm text-silver">{p.excerpt}</p></a>)}</div>
+  </section>
+</Base>

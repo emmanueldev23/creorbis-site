@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { plans, beyond } from '../config/site';
+const d = (i: number) => `--d:${i * 90}ms`;
+---
+<Base title="Plans and Pricing | CREORBIS" description="Clear starting prices for CREORBIS website plans, custom software, AI automation and ongoing support.">
+  <section class="wrap pt-16 pb-8">
+    <h1 class="rv max-w-3xl text-4xl font-semibold sm:text-5xl">Plans and pricing</h1>
+    <p class="rv mt-5 max-w-2xl text-lg text-silver" style="--d:100ms">Starting prices for websites, and fixed quotes for anything custom. Final price depends on scope, and you always know it before work begins.</p>
+  </section>
+  <section class="wrap grid gap-5 py-8 md:grid-cols-3">
+    {plans.map((p, i) => (
+      <article class:list={['rv card relative flex flex-col rounded-xl p-7', p.featured && '!border-brand']} style={d(i)}>
+        {p.featured && <p class="absolute -top-2.5 left-6 bg-navy px-2 font-mono text-xs text-aqua">Recommended for businesses</p>}
+        <h2 class="text-xl font-semibold">{p.name}</h2>
+        <p class="mt-3 font-display text-4xl font-semibold">{p.price}</p>
+        <p class="mt-1 text-sm text-silver">{p.note}</p>
+        <p class="mt-4 text-silver">{p.blurb}</p>
+        <ul class="mt-5 flex-1 space-y-2 text-sm">{p.features.map((f) => <li class="flex gap-2"><span class="text-aqua" aria-hidden="true">–</span><span class="text-silver">{f}</span></li>)}</ul>
+        <a href={`/contact?service=${p.service}&plan=${p.name}`} class:list={['btn mt-7', p.featured ? 'btn-primary' : 'btn-ghost']}>Choose {p.name}</a>
+      </article>
+    ))}
+  </section>
+  <section class="wrap py-8">
+    <h2 class="rv text-2xl font-semibold">Beyond websites</h2>
+    <ul class="mt-6 divide-y divide-white/10 border-y border-white/10">
+      {beyond.map((b, i) => (
+        <li class="rv grid items-center gap-3 py-5 md:grid-cols-[1.1fr_1.6fr_auto_auto] md:gap-8" style={d(i)}>
+          <h3 class="text-lg font-medium"><a href={`/services/${b.service}`} class="hover:text-aqua">{b.title}</a></h3>
+          <p class="text-sm text-silver">{b.text}</p>
+          <p class="font-display text-xl font-semibold">{b.price}</p>
+          <a href={`/contact?service=${b.service}`} class="btn btn-ghost !py-2">Get a quote</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section class="wrap py-12">
+    <div class="rv rounded-xl border border-white/10 p-7">
+      <h2 class="text-xl font-semibold">Good to know</h2>
+      <ul class="mt-4 space-y-2 text-silver">
+        <li class="flex gap-2"><span class="text-aqua" aria-hidden="true">–</span>Prices are starting points. The final quote depends on scope.</li>
+        <li class="flex gap-2"><span class="text-aqua" aria-hidden="true">–</span>Domain names, hosting and third-party service fees are not included.</li>
+        <li class="flex gap-2"><span class="text-aqua" aria-hidden="true">–</span>Payment terms are agreed in writing before work begins.</li>
+      </ul>
+    </div>
+  </section>
+</Base>

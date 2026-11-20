@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import { faqs } from '../config/site';
+const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
+---
+<Base title="FAQ | CREORBIS" description="Answers to common questions about CREORBIS websites, custom web apps, CRM and ERP development, pricing and support." jsonLd={ld}>
+  <section class="wrap pt-16 pb-8">
+    <h1 class="rv max-w-3xl text-4xl font-semibold sm:text-5xl">Frequently asked questions</h1>
+    <p class="rv mt-5 max-w-2xl text-lg text-silver" style="--d:100ms">Straight answers about how we work, what it costs and what to expect.</p>
+  </section>
+  <section class="wrap max-w-3xl py-8"><Faq items={faqs} /></section>
+  <section class="wrap py-12">
+    <div class="rv rounded-2xl border border-white/10 bg-surface/40 p-8">
+      <h2 class="text-2xl font-semibold">Still have a question?</h2>
+      <p class="mt-2 text-silver">Ask us directly. We’ll answer honestly, even if the answer is that you don’t need us.</p>
+      <a href="/contact" class="btn btn-primary mt-6">Contact us</a>
+    </div>
+  </section>
+</Base>

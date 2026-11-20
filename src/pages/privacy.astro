@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Legal from '../components/Legal.astro';
+import { site } from '../config/site';
+const contact = site.contactEmail ? `email us at ${site.contactEmail}` : 'use the contact form on this website';
+const sections = [
+  { h: 'Who we are', p: [`This website is operated by CREORBIS, a business run by its founder, ${site.founder.name}${site.location ? `, based in ${site.location}` : ''}.`] },
+  { h: 'What we collect', p: ['When you send an enquiry we collect the details you enter: your name, email address, optional business name, the service you need, an optional budget and your project description.', 'This website does not use advertising cookies or analytics at the time of writing.'] },
+  { h: 'Why we collect it', p: ['We use your details only to reply to your enquiry and to discuss and quote your project. We do not sell your information.'] },
+  { h: 'Who processes it', p: ['Enquiries are delivered to us by a third-party form service, which passes your message to our email. That provider handles your data while it is in transit.'] },
+  { h: 'How long we keep it', p: ['We keep enquiry details for as long as needed to respond and to manage any resulting work, then delete them when they are no longer needed.'] },
+  { h: 'Your choices', p: [`You can ask us to see, correct or delete the information you sent us. To do so, ${contact}.`] },
+  { h: 'Changes', p: ['If we change how we handle data, for example by adding analytics, we will update this page.'] },
+];
+---
+<Base title="Privacy Policy | CREORBIS" description="How CREORBIS collects and uses the details you send through the contact form."><Legal title="Privacy Policy" updated="5 November 2026" sections={sections} /></Base>

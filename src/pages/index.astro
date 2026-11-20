@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import Orbit from '../components/Orbit.astro';
+import { posts } from '../data/posts';
+import { services, plans, process, techs } from '../config/site';
+const headline = 'Engineering digital solutions that move businesses forward.'.split(' ');
+const principles = [
+  { t: 'Practical over complicated', d: 'We choose the simplest solution that solves your problem well, and explain it in plain language.' },
+  { t: 'Clean, maintainable code', d: 'What we build can be understood, changed and extended later, by us or by anyone else.' },
+  { t: 'Built for the long term', d: 'Reliability and sensible architecture come before effects and shortcuts.' },
+];
+const d = (i: number) => `--d:${i * 90}ms`;
+---
+<Base title="CREORBIS | Technology for a World of Possibilities">
+  <div class="relative isolate overflow-hidden">
+    <div class="hero-glow" aria-hidden="true"></div><div class="hero-grid" aria-hidden="true"></div>
+    <section class="wrap grid items-center gap-12 pb-20 pt-16 lg:grid-cols-[1.2fr_1fr] lg:pb-28 lg:pt-24">
+      <div>
+        <p class="rv font-mono text-xs tracking-[0.22em] text-aqua">CREATE. CONNECT. TRANSFORM.</p>
+        <h1 class="mt-5 text-4xl font-semibold sm:text-5xl lg:text-6xl">
+          {headline.map((w, i) => <><span class="inline-block overflow-hidden align-bottom"><span class="word inline-block" style={`--i:${i}`}>{w}</span></span>{' '}</>)}
+        </h1>
+        <p class="rv mt-6 max-w-xl text-lg text-silver" style="--d:600ms">CREORBIS builds websites, custom web apps, CRM and ERP systems, and AI tools for startups, small businesses and growing teams.</p>
+        <div class="rv mt-9 flex flex-wrap gap-3" style="--d:750ms">
+          <a href="/contact" class="btn btn-primary">Start a project</a>
+          <a href="/pricing" class="btn btn-ghost">See plans and pricing</a>
+        </div>
+      </div>
+      <div class="rv" style="--d:300ms"><Orbit /></div>
+    </section>
+  </div>
+
+  <section class="wrap pb-6" aria-label="Technologies">
+    <p class="rv mb-4 text-sm text-silver">Technology we work with</p>
+    <div class="marquee rv"><div class="marquee-track">
+      {[...techs, ...techs].map((t) => <span class="rounded border border-white/15 px-3 py-1 font-mono text-xs text-aqua">{t}</span>)}
+    </div></div>
+  </section>
+
+  <section class="wrap py-16">
+    <h2 class="rv max-w-2xl text-3xl font-semibold">What we do</h2>
+    <ul class="mt-8 divide-y divide-white/10 border-y border-white/10">
+      {services.map((s, i) => (
+        <li class="rv" style={d(i)}>
+          <a href={`/services/${s.id}`} class="group grid gap-2 py-6 transition-colors hover:bg-white/[0.03] md:grid-cols-[1fr_1.4fr_auto] md:items-center md:gap-10">
+            <h3 class="text-xl font-medium transition-transform duration-300 group-hover:translate-x-2">{s.title}</h3>
+            <p class="text-silver">{s.summary}</p>
+            <svg class="hidden -translate-x-2 text-aqua opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap py-16">
+    <h2 class="rv text-3xl font-semibold">How we work</h2>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      {principles.map((p, i) => (
+        <div class="rv border-l-2 border-brand pl-5" style={d(i)}><h3 class="text-lg font-medium">{p.t}</h3><p class="mt-2 text-silver">{p.d}</p></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap py-16">
+    <h2 class="rv text-3xl font-semibold">From first message to launch</h2>
+    <ol class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {process.map((p, i) => (
+        <li class="rv card rounded-lg bg-surface/40 p-5" style={d(i)}>
+          <span class="font-mono text-sm text-aqua">{i + 1}</span>
+          <h3 class="mt-3 text-lg font-medium">{p.title}</h3><p class="mt-1 text-sm text-silver">{p.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wrap py-16">
+    <div class="rv flex flex-wrap items-end justify-between gap-4">
+      <div><h2 class="text-3xl font-semibold">Plans and pricing</h2><p class="mt-3 max-w-xl text-silver">Clear starting prices for websites, and fixed quotes for custom software.</p></div>
+      <a href="/pricing" class="text-sm text-aqua hover:underline">Full pricing details</a>
+    </div>
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      {plans.map((p, i) => (
+        <article class:list={['rv card flex flex-col rounded-xl p-6', p.featured && '!border-brand']} style={d(i)}>
+          <h3 class="text-lg font-medium">{p.name}</h3>
+          <p class="mt-3 font-display text-3xl font-semibold">{p.price}</p>
+          <p class="mt-1 text-sm text-silver">{p.note}</p>
+          <p class="mt-4 flex-1 text-sm text-silver">{p.blurb}</p>
+          <a href={`/contact?service=${p.service}&plan=${p.name}`} class:list={['btn mt-6', p.featured ? 'btn-primary' : 'btn-ghost']}>Choose {p.name}</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap py-16">
+    <div class="rv flex flex-wrap items-end justify-between gap-4">
+      <div><h2 class="text-3xl font-semibold">From the blog</h2><p class="mt-3 max-w-xl text-silver">Practical guides on websites, CRM, ERP and custom software.</p></div>
+      <a href="/blog" class="text-sm text-aqua hover:underline">All articles</a>
+    </div>
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      {posts.slice(0, 3).map((p, i) => (
+        <a href={`/blog/${p.slug}`} class="rv card group flex flex-col rounded-xl p-6" style={d(i)}>
+          <p class="font-mono text-xs text-aqua">{p.tags.join(' · ')}</p>
+          <h3 class="mt-3 text-lg font-medium transition-colors group-hover:text-aqua">{p.title}</h3>
+          <p class="mt-2 text-sm text-silver">{p.excerpt}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap py-16">
+    <div class="rv rounded-2xl border border-white/10 bg-surface/40 p-8 md:p-12">
+      <h2 class="max-w-xl text-3xl font-semibold">Have something to build?</h2>
+      <p class="mt-3 max-w-xl text-silver">Tell us what you need. We’ll reply with honest questions and a clear next step.</p>
+      <div class="mt-7 flex flex-wrap gap-3"><a href="/get-started" class="btn btn-primary">Get started</a><a href="/faq" class="btn btn-ghost">Read the FAQ</a></div>
+    </div>
+  </section>
+</Base>
